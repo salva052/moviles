@@ -275,11 +275,10 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                                             children: [
                                               Text('${item.id}  ·  ${item.cliente}'),
                                               const SizedBox(height: 6),
-                                              Row(children: [
+                                              Wrap(spacing: 12, children: [
                                                 Text(item.estado, style: TextStyle(
                                                   color: colorEstado(item.estado), fontWeight: FontWeight.bold,
                                                 )),
-                                                const SizedBox(width: 12),
                                                 Text('Prioridad: ${item.prioridad}', style: TextStyle(
                                                   color: colorPrioridad(item.prioridad), fontWeight: FontWeight.w600,
                                                 )),
