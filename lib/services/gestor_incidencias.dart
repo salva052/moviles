@@ -9,15 +9,25 @@ class GestorIncidencias {
     incidencias = await datos.leer();
   }
 
-  List<Incidencia> buscar(String texto) {
+  static const String todosEstados = 'Todos';
+  static const String todasPrioridades = 'Todas';
+
+  /// Aplica juntas todas las condiciones activas (FEAT-002): texto, estado y prioridad.
+  /// [estado] = 'Todos' y [prioridad] = 'Todas' significan "sin filtro".
+  List<Incidencia> buscar(
+    String texto, {
+    String estado = todosEstados,
+    String prioridad = todasPrioridades,
+  }) {
     // BUG-002: antes era contains() sensible a mayúsculas, solo en título y sin trim.
     final consulta = texto.trim().toLowerCase();
-    if (consulta.isEmpty) return incidencias;
-    return incidencias
-        .where((x) =>
-            x.titulo.toLowerCase().contains(consulta) ||
-            x.descripcion.toLowerCase().contains(consulta))
-        .toList();
+    return incidencias.where((x) {
+      if (estado != todosEstados && x.estado != estado) return false;
+      if (prioridad != todasPrioridades && x.prioridad != prioridad) return false;
+      if (consulta.isEmpty) return true;
+      return x.titulo.toLowerCase().contains(consulta) ||
+          x.descripcion.toLowerCase().contains(consulta);
+    }).toList();
   }
 
   Incidencia? porId(String id) {
